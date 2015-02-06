@@ -30,6 +30,9 @@
     [self.layer addSublayer:_middleBar];
     [self.layer addSublayer:_bottomBar];
     
+    self.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+    self.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
+
     [self updateBars];
     [self updateBarsColor];
 }
@@ -69,10 +72,40 @@
     [self updateBarsTransformations];
 }
 
+#pragma mark - 
+
+- (void)contentFrameDidChange
+{
+    [super contentFrameDidChange];
+    
+    [self updateBars];
+}
+
 #pragma mark - Update
 
 - (void)updateBars
 {
+    CGRect contentFrame = self.contentFrame;
+    
+    CGFloat barLength = MIN(CGRectGetWidth(contentFrame), CGRectGetHeight(contentFrame));
+    
+    CGFloat barWidth = barLength / 8;
+    
+    UIBezierPath * barPath = [UIBezierPath bezierPathWithRoundedRect:CGRectMake(0, 0, barLength, barWidth)
+                                                        cornerRadius:barWidth / 2];
+    _topBar.bounds = [barPath bounds];
+    _topBar.path = [barPath CGPath];
+    _topBar.position = CGPointMake(CGRectGetMidX(contentFrame), CGRectGetMinY(contentFrame) + barWidth / 2);
+    
+    _middleBar.bounds = [barPath bounds];
+    _middleBar.path = [barPath CGPath];
+    _middleBar.position = CGPointMake(CGRectGetMidX(contentFrame), CGRectGetMidY(contentFrame));
+    
+    _bottomBar.bounds = [barPath bounds];
+    _bottomBar.path = [barPath CGPath];
+    _bottomBar.position = CGPointMake(CGRectGetMidX(contentFrame), CGRectGetMaxY(contentFrame) - barWidth / 2);
+
+    /*
     CGFloat barLength = MIN(CGRectGetWidth(self.bounds), CGRectGetHeight(self.bounds));
     
     CGFloat barWidth = barLength / 8;
@@ -90,6 +123,7 @@
     _bottomBar.bounds = [barPath bounds];
     _bottomBar.path = [barPath CGPath];
     _bottomBar.position = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetHeight(self.bounds) - barWidth / 2);
+     */
 }
 
 - (void)updateBarsColor
@@ -106,8 +140,6 @@
     _bottomBar.fillColor = [barColor CGColor];
 }
 
-
-
 - (void)tintColorDidChange
 {
     [super tintColorDidChange];
@@ -119,12 +151,14 @@
 {
     if (self.isSelected)
     {
+        CGRect contentFrame = self.contentFrame;
+        
         self.middleBar.transform = self.selected ? CATransform3DMakeRotation(M_PI / 2, 0, 1, 0): CATransform3DIdentity;
         self.middleBar.opacity = 0;
         
-        self.topBar.transform = CATransform3DConcat(CATransform3DMakeRotation(M_PI / 4, 0, 0, 1), CATransform3DMakeTranslation(0, CGRectGetMidY(self.bounds) - CGRectGetMidY(self.topBar.bounds), 0));
+        self.topBar.transform = CATransform3DConcat(CATransform3DMakeRotation(M_PI / 4, 0, 0, 1), CATransform3DMakeTranslation(0, CGRectGetMidY(contentFrame) - CGRectGetMidY(self.topBar.frame), 0));
         
-        self.bottomBar.transform = CATransform3DConcat(CATransform3DMakeRotation(- M_PI / 4, 0, 0, 1), CATransform3DMakeTranslation(0, CGRectGetMidY(self.bounds) - CGRectGetMidY(self.bottomBar.frame), 0));
+        self.bottomBar.transform = CATransform3DConcat(CATransform3DMakeRotation(- M_PI / 4, 0, 0, 1), CATransform3DMakeTranslation(0, CGRectGetMidY(contentFrame) - CGRectGetMidY(self.bottomBar.frame), 0));
     }
     else
     {
@@ -133,7 +167,6 @@
         self.middleBar.transform = CATransform3DIdentity;
         self.bottomBar.transform = CATransform3DIdentity;
     }
-    
 }
 
 

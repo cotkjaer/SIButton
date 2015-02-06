@@ -6,8 +6,8 @@
 //
 //
 
-#import <UIKit/UIKit.h>
+#import "SIAnimatedButton.h"
 
-@interface SIAddButton : UIControl
+@interface SIAddButton : SIAnimatedButton
 
 @end

@@ -27,6 +27,9 @@
     [self.layer addSublayer:_verticalBar];
     [self.layer addSublayer:_horizontalBar];
     
+    self.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+    self.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
+
     [self updateBars];
     [self updateBarsColor];
 }
@@ -66,11 +69,29 @@
     [self updateBarsTransformations];
 }
 
+#pragma mark - PointSize
+
+- (void)contentFrameDidChange
+{
+    [super contentFrameDidChange];
+    [self updateBars];
+}
+
 #pragma mark - Update
 
 - (void)updateBars
 {
-    CGFloat barLength = MIN(CGRectGetWidth(self.bounds), CGRectGetHeight(self.bounds));
+    CGRect contentFrame = self.contentFrame;
+    
+    CGFloat barLength = MIN(CGRectGetWidth(contentFrame), CGRectGetHeight(contentFrame));
+ 
+    if (self.pointSize > 0)
+    {
+        barLength = MIN(self.pointSize, barLength);
+    }
+    
+    CGFloat midX = CGRectGetMidX(contentFrame);
+    CGFloat midY = CGRectGetMidY(contentFrame);
     
     CGFloat barWidth = barLength / 8;
     
@@ -78,14 +99,14 @@
                                                         cornerRadius:barWidth / 2];
     _verticalBar.bounds = [barPath bounds];
     _verticalBar.path = [barPath CGPath];
-    _verticalBar.position = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
+    _verticalBar.position = CGPointMake(midX, midY);
     
     barPath = [UIBezierPath bezierPathWithRoundedRect:CGRectMake(0, 0, barWidth, barLength)
                                          cornerRadius:barWidth / 2];
     
     _horizontalBar.bounds = [barPath bounds];
     _horizontalBar.path = [barPath CGPath];
-    _horizontalBar.position = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
+    _horizontalBar.position = CGPointMake(midX, midY);
 }
 
 - (void)updateBarsColor
