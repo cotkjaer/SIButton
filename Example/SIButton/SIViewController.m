@@ -26,4 +26,11 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (IBAction)siButtonPressed:(UIControl *)sender
+{
+    sender.selected = !sender.isSelected;
+    
+    NSLog(@"Pressing Button");
+}
+
 @end
