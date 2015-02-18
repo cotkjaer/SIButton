@@ -133,9 +133,8 @@
 {
     if (self.isSelected)
     {
-        self.verticalBar.transform = CATransform3DMakeRotation(M_PI / 4, 0, 0, 1);
-        
-        self.horizontalBar.transform = CATransform3DMakeRotation(M_PI / 4, 0, 0, 1);
+        self.verticalBar.transform = CATransform3DMakeRotation(M_PI - M_PI / 4, 0, 0, 1);
+        self.horizontalBar.transform = CATransform3DMakeRotation(M_PI * 2 - M_PI / 4, 0, 0, 1);
     }
     else
     {

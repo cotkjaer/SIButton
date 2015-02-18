@@ -104,26 +104,6 @@
     _bottomBar.bounds = [barPath bounds];
     _bottomBar.path = [barPath CGPath];
     _bottomBar.position = CGPointMake(CGRectGetMidX(contentFrame), CGRectGetMaxY(contentFrame) - barWidth / 2);
-
-    /*
-    CGFloat barLength = MIN(CGRectGetWidth(self.bounds), CGRectGetHeight(self.bounds));
-    
-    CGFloat barWidth = barLength / 8;
-    
-    UIBezierPath * barPath = [UIBezierPath bezierPathWithRoundedRect:CGRectMake(0, 0, barLength, barWidth)
-                                                        cornerRadius:barWidth / 2];
-    _topBar.bounds = [barPath bounds];
-    _topBar.path = [barPath CGPath];
-    _topBar.position = CGPointMake(CGRectGetMidX(self.bounds), barWidth / 2);
-    
-    _middleBar.bounds = [barPath bounds];
-    _middleBar.path = [barPath CGPath];
-    _middleBar.position = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
-    
-    _bottomBar.bounds = [barPath bounds];
-    _bottomBar.path = [barPath CGPath];
-    _bottomBar.position = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetHeight(self.bounds) - barWidth / 2);
-     */
 }
 
 - (void)updateBarsColor
@@ -153,11 +133,13 @@
     {
         CGRect contentFrame = self.contentFrame;
         
-        self.middleBar.transform = self.selected ? CATransform3DMakeRotation(M_PI / 2, 0, 1, 0): CATransform3DIdentity;
+        self.middleBar.transform = CATransform3DMakeRotation(M_PI / 2, 0, 1, 0);
         self.middleBar.opacity = 0;
         
+        if (CATransform3DIsIdentity(self.topBar.transform))
         self.topBar.transform = CATransform3DConcat(CATransform3DMakeRotation(M_PI / 4, 0, 0, 1), CATransform3DMakeTranslation(0, CGRectGetMidY(contentFrame) - CGRectGetMidY(self.topBar.frame), 0));
         
+        if (CATransform3DIsIdentity(self.bottomBar.transform))
         self.bottomBar.transform = CATransform3DConcat(CATransform3DMakeRotation(- M_PI / 4, 0, 0, 1), CATransform3DMakeTranslation(0, CGRectGetMidY(contentFrame) - CGRectGetMidY(self.bottomBar.frame), 0));
     }
     else
