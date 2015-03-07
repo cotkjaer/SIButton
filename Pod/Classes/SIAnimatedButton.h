@@ -8,6 +8,8 @@
 
 @import UIKit;
 
+static CGFloat kLineWidthFactor = 1.0/12.0;
+
 @interface SIAnimatedButton : UIControl
 
 @property (nonatomic) CGFloat pointSize;

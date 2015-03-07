@@ -93,7 +93,7 @@
     CGFloat midX = CGRectGetMidX(contentFrame);
     CGFloat midY = CGRectGetMidY(contentFrame);
     
-    CGFloat barWidth = barLength / 8;
+    CGFloat barWidth = barLength * kLineWidthFactor;// / 12;
     
     UIBezierPath * barPath = [UIBezierPath bezierPathWithRoundedRect:CGRectMake(0, 0, barLength, barWidth)
                                                         cornerRadius:barWidth / 2];
@@ -112,6 +112,21 @@
 - (void)updateBarsColor
 {
     UIColor * barColor = self.tintColor;
+    
+    switch (self.tintAdjustmentMode)
+    {
+        case UIViewTintAdjustmentModeAutomatic:
+        case UIViewTintAdjustmentModeNormal:
+            
+            break;
+            
+        case UIViewTintAdjustmentModeDimmed:
+            
+            barColor = [UIColor lightGrayColor];
+            
+        default:
+            break;
+    }
     
     if (self.isHighlighted)
     {

@@ -89,7 +89,7 @@
     
     CGFloat barLength = MIN(CGRectGetWidth(contentFrame), CGRectGetHeight(contentFrame));
     
-    CGFloat barWidth = barLength / 8;
+    CGFloat barWidth = barLength * kLineWidthFactor;/// 12;
     
     UIBezierPath * barPath = [UIBezierPath bezierPathWithRoundedRect:CGRectMake(0, 0, barLength, barWidth)
                                                         cornerRadius:barWidth / 2];
